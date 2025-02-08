@@ -1,1 +1,1 @@
-# Gomoku-wuzi-
+# Gomoku-wuzi
