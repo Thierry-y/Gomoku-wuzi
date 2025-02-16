@@ -3,11 +3,11 @@
 import pygame
 import sys
 import time
-from alpha_beta import searcher
+from search import searcher
 
 # Constants
 GRID_SIZE = 30      # Size of each grid cell
-BOARD_SIZE = 15     # Number of rows/columns on the board
+BOARD_SIZE = 19     # Number of rows/columns on the board
 SCREEN_SIZE = GRID_SIZE * BOARD_SIZE  # Window size
 BROWN = (139, 69, 19)     # Board background color
 LINE_COLOR = (0, 0, 0)
