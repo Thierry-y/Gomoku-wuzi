@@ -3,8 +3,8 @@ class evaluation(object):
         self.POS = []
         # Create positional weights for the board:
         # The center has the highest value (7) and the value decreases outward.
-        for i in range(15):
-            row = [ (7 - max(abs(i - 7), abs(j - 7))) for j in range(15) ]
+        for i in range(19):
+            row = [ (7 - max(abs(i - 7), abs(j - 7))) for j in range(19) ]
             self.POS.append(tuple(row))
         self.POS = tuple(self.POS)
         self.STWO = 1       # Blocked two
@@ -20,12 +20,12 @@ class evaluation(object):
         self.NOTYPE = 11    
         self.ANALYSED = 255     # Already analyzed
         self.TODO = 0           # Not yet analyzed
-        self.result = [0 for i in range(30)]     # Stores the evaluation result for a line
-        self.line = [0 for i in range(30)]       # Stores the current line data
+        self.result = [0 for i in range(38)]     # Stores the evaluation result for a line
+        self.line = [0 for i in range(38)]       # Stores the current line data
         self.record = []            # Record of analysis for the entire board [row][col][direction]
-        for i in range(15):
+        for i in range(19):
             self.record.append([])
-            for j in range(15):
+            for j in range(19):
                 self.record[i].append([0, 0, 0, 0])
         self.count = []             # Count of patterns: count[color][pattern]
         for i in range(3):
@@ -36,8 +36,8 @@ class evaluation(object):
     # Reset data
     def reset(self):
         TODO = self.TODO
-        for i in range(15):
-            for j in range(15):
+        for i in range(19):
+            for j in range(19):
                 self.record[i][j][0] = TODO
                 self.record[i][j][1] = TODO
                 self.record[i][j][2] = TODO
@@ -70,8 +70,8 @@ class evaluation(object):
         TODO, ANALYSED = self.TODO, self.ANALYSED
         self.reset()
         # Analyze all pieces on the board in four directions
-        for i in range(15):
-            for j in range(15):
+        for i in range(19):
+            for j in range(19):
                 if board[i][j] != 0:
                     if record[i][j][0] == TODO:     # Horizontal not yet analyzed
                         self.__analysis_horizon(board, i, j)
@@ -87,8 +87,8 @@ class evaluation(object):
         # Only consider these patterns
         for c in (FIVE, FOUR, SFOUR, THREE, STHREE, TWO, STWO):
             check[c] = 1
-        for i in range(15):
-            for j in range(15):
+        for i in range(19):
+            for j in range(19):
                 stone = board[i][j]
                 if stone != 0:
                     for k in range(4):
@@ -185,8 +185,8 @@ class evaluation(object):
         
         # Add positional weight (center has highest weight, decreasing outward)
         wc, bc = 0, 0
-        for i in range(15):
-            for j in range(15):
+        for i in range(19):
+            for j in range(19):
                 stone = board[i][j]
                 if stone != 0:
                     if stone == WHITE:
@@ -204,10 +204,10 @@ class evaluation(object):
     def __analysis_horizon(self, board, i, j):
         line, result, record = self.line, self.result, self.record
         TODO = self.TODO
-        for x in range(15):
+        for x in range(19):
             line[x] = board[i][x]
-        self.analysis_line(line, result, 15, j)
-        for x in range(15):
+        self.analysis_line(line, result, 19, j)
+        for x in range(19):
             if result[x] != TODO:
                 record[i][x][0] = result[x]
         return record[i][j][0]
@@ -216,10 +216,10 @@ class evaluation(object):
     def __analysis_vertical(self, board, i, j):
         line, result, record = self.line, self.result, self.record
         TODO = self.TODO
-        for x in range(15):
+        for x in range(19):
             line[x] = board[x][j]
-        self.analysis_line(line, result, 15, i)
-        for x in range(15):
+        self.analysis_line(line, result, 19, i)
+        for x in range(19):
             if result[x] != TODO:
                 record[x][j][1] = result[x]
         return record[i][j][1]
@@ -233,8 +233,8 @@ class evaluation(object):
         else:
             x, y = 0, i - j
         k = 0
-        while k < 15:
-            if x + k > 14 or y + k > 14:
+        while k < 19:
+            if x + k > 18 or y + k > 18:
                 break
             line[k] = board[y + k][x + k]
             k += 1
@@ -248,13 +248,13 @@ class evaluation(object):
     def __analysis_right(self, board, i, j):
         line, result, record = self.line, self.result, self.record
         TODO = self.TODO
-        if 14 - i < j:
-            x, y, realnum = j - 14 + i, 14, 14 - i
+        if 18 - i < j:
+            x, y, realnum = j - 18 + i, 18, 18 - i
         else:
             x, y, realnum = 0, i + j, j
         k = 0
-        while k < 15:
-            if x + k > 14 or y - k < 0:
+        while k < 19:
+            if x + k > 18 or y - k < 0:
                 break
             line[k] = board[y - k][x + k]
             k += 1
@@ -269,11 +269,11 @@ class evaluation(object):
         TODO, ANALYSED = self.TODO, self.ANALYSED
         THREE, STHREE = self.THREE, self.STHREE
         FOUR, SFOUR = self.FOUR, self.SFOUR
-        while len(line) < 30: 
+        while len(line) < 38: 
             line.append(0xf)
-        while len(record) < 30: 
+        while len(record) < 38: 
             record.append(TODO)
-        for i in range(num, 30):
+        for i in range(num, 38):
             line[i] = 0xf
         for i in range(num):
             record[i] = TODO
@@ -406,68 +406,11 @@ class evaluation(object):
 
     def textrec(self, direction=0):
         text = []
-        for i in range(15):
+        for i in range(19):
             line = ''
-            for j in range(15):
+            for j in range(19):
                 line += '%x ' % (self.record[i][j][direction] & 0xf)
             text.append(line)
         return '\n'.join(text)
         
 
-class searcher(object):
-    def __init__(self):
-        self.evaluator = evaluation()
-        # Create an empty board (15x15)
-        self.board = [[0 for _ in range(15)] for _ in range(15)]
-        self.gameover = 0
-        self.overvalue = 0
-        self.maxdepth = 3
-
-    # Generate all possible moves based on positional weights
-    def genmove(self, turn):
-        moves = []
-        board = self.board
-        POSES = self.evaluator.POS
-        for i in range(15):
-            for j in range(15):
-                if board[i][j] == 0:
-                    score = POSES[i][j]
-                    moves.append((score, i, j))
-        moves.sort()
-        moves.reverse()
-        return moves
-
-    # Recursive search: returns the best score for the current turn
-    def __search(self, turn, depth, alpha=-0x7fffffff, beta=0x7fffffff):
-        if depth <= 0:
-            score = self.evaluator.evaluate(self.board, turn)
-            return score
-        score = self.evaluator.evaluate(self.board, turn)
-        if abs(score) >= 9999 and depth < self.maxdepth:
-            return score
-        moves = self.genmove(turn)
-        bestmove = None
-        for score_move, row, col in moves:
-            self.board[row][col] = turn
-            nturn = 2 if turn == 1 else 1
-            score_eval = - self.__search(nturn, depth - 1, -beta, -alpha)
-            self.board[row][col] = 0
-            if score_eval > alpha:
-                alpha = score_eval
-                bestmove = (row, col)
-                if alpha >= beta:
-                    break
-        if depth == self.maxdepth and bestmove:
-            self.bestmove = bestmove
-        return alpha
-
-    # Public interface: search for the best move and return its score and coordinates
-    def search(self, turn, depth=3):
-        self.maxdepth = depth
-        self.bestmove = None
-        score = self.__search(turn, depth)
-        if abs(score) > 8000:
-            self.maxdepth = depth
-            score = self.__search(turn, 1)
-        row, col = self.bestmove
-        return score, row, col
