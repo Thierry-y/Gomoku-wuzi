@@ -161,6 +161,41 @@ def evaluate_model(model, dataset, criterion):
     avg_mae = total_mae / len(dataset)
     print(f'Evaluation - Loss: {avg_loss:.4f} - MAE: {avg_mae:.4f}')
 
+class Model:
+    def __init__(self, model_path='go_model.pth'):
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        
+        self.model = NuNet().to(self.device)
+        self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+        self.model.eval()  
+
+    def get_score_ANN(self, board, turn):
+        # Convert the Go board into a flattened input format for the neural network
+        x_input = np.zeros((1, 361), dtype=np.float32)
+        opponent = 2 if turn == 1 else 1  
+        
+        for i in range(19):
+            for j in range(19):
+                pos = i * 19 + j  # Convert 2D position to 1D index
+                val = board[i][j]  # Get board value at the current position
+                
+                if val == turn:
+                    x_input[0, pos] = 1  # Mark player's piece
+                elif val == opponent:
+                    x_input[0, pos] = 2  # Mark opponent's piece
+                else:
+                    x_input[0, pos] = 0  # Mark empty space
+        
+        # Convert the input array to a PyTorch tensor and move it to the appropriate device
+        x_tensor = torch.tensor(x_input, dtype=torch.float32).to(self.device)
+        
+        with torch.no_grad():  # Disable gradient computation for efficiency
+            prediction = self.model(x_tensor)  # Get model prediction
+            score = prediction.item() * 20000 - 10000  # Scale the output to a meaningful range
+        
+        # Ensure the score is within the valid range (-10000 to 10000)
+        return max(min(int(score), 10000), -10000)
+
 if __name__ == "__main__":
     # Train the model
     trained_model = train_model()
