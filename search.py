@@ -1,11 +1,12 @@
 from alpha_beta import evaluation  
+from val_net_ai import Model_new
 from ai import Model  
 
 class searcher(object):
-    def __init__(self, ann_model_path='go_model.pth'):
+    def __init__(self, ann_model_path='go_model_alphazero.pth'):
         # Initialize evaluation functions
         self.evaluator = evaluation()
-        self.ann_evaluator = Model(ann_model_path)
+        self.ann_evaluator = Model_new(ann_model_path)
         
         # Initialize an empty 19x19 Go board
         self.board = [[0 for _ in range(19)] for _ in range(19)]
@@ -53,11 +54,16 @@ class searcher(object):
     
     # Recursive search: returns the best score for the current turn
     def __search(self, turn, depth, alpha=-0x7fffffff, beta=0x7fffffff):
-        if depth <= 0:
-            # Use a mix of ANN-based and traditional evaluation functions
-            mix_score = self.ann_evaluator.get_score_ANN(self.board, turn) * 0.5 + self.evaluator.evaluate(self.board, turn) * 0.5
-            return mix_score
+        # if depth <= 0:
+        #     # Use a mix of ANN-based and traditional evaluation functions
+        #     mix_score = self.ann_evaluator.get_score_ANN(self.board, turn) * 0.5 + self.evaluator.evaluate(self.board, turn) * 0.5
+        #     return mix_score
         
+        if depth <= 0:
+            # Use a ANN-based evaluation functions
+            mix_score = self.ann_evaluator.get_score_ANN(self.board, turn)
+            return mix_score
+
         # if depth <= 0:
         #     score = self.evaluator.evaluate(self.board, turn)
         #     return score
