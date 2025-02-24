@@ -41,9 +41,9 @@ class GoDataset(Dataset):
         )
 
 # Neural network model definition
-class NuNet(nn.Module):
+class VaNet(nn.Module):
     def __init__(self):
-        super(NuNet, self).__init__()
+        super(VaNet, self).__init__()
         # Convolutional layers for feature extraction
         self.conv = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=3, padding=1),
@@ -113,7 +113,7 @@ def train_model():
     dataloader = DataLoader(dataset, batch_size=64, shuffle=True)
 
     # Initialize model, loss function, optimizer, and scheduler
-    model = NuNet().to(device)
+    model = VaNet().to(device)
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-5)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
@@ -172,7 +172,7 @@ def evaluate_model(model, dataset, criterion):
 class Model_new:
     def __init__(self, model_path='go_model_alphazero.pth'):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        self.model = NuNet().to(self.device)
+        self.model = VaNet().to(self.device)
         self.model.load_state_dict(torch.load(model_path, map_location=self.device))
         self.model.eval()
 
