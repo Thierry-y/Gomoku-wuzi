@@ -124,6 +124,8 @@ During actual gameplay, the model shows the ability to connect its own pieces an
 
 ## Reference
 
-This project references the minmax algorithm from [gobang](https://github.com/skywind3000/gobang) library by [skywind3000]
+This project references the minmax algorithm from [gobang](https://github.com/skywind3000/gobang) 
 
 DeepMind AlphaZero: [Mastering the game of Go without human knowledge](https://www.nature.com/articles/nature24270.epdf?author_access_token=VJXbVjaSHxFoctQQ4p2k4tRgN0jAjWel9jnR3ZoTv0PVW4gB86EEpGqTRDtpIz-2rmo8-KG06gqVobU5NSCFeHILHcVFUeMsbvwS-lxjqQGg98faovwjxeTUgZAUMnRQ)
+
+This project uses the AlphaZero architecture, based on [Alpha-Gobang-Zero](https://github.com/zhiyiYo/Alpha-Gobang-Zero)
