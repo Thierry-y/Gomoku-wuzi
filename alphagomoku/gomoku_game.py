@@ -23,7 +23,7 @@ board_len = 9
 cell_size = screen_size // (board_len + 1)  
 
 # Load the model
-model_path = 'model/final_policy_value_net.pth'
+model_path = 'model/final_policy_value_net_2700.pth'
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 policy_value_net = torch.load(model_path, map_location=device)
 policy_value_net.eval()
@@ -65,7 +65,7 @@ def main():
                     if action in board.available_actions:
                         board.do_action(action)
                         if board.is_game_over()[0]:
-                            print("Game Over!")
+                            print("Player (Black) wins!")
                             running = False
                         else:
                             if mcts.is_self_play:
@@ -74,7 +74,7 @@ def main():
                                 action = mcts.get_action(board)
                             board.do_action(action)
                             if board.is_game_over()[0]:
-                                print("Game Over!")
+                                print("AI (White) wins!")
                                 running = False
 
         draw_board()

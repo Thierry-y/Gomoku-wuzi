@@ -10,7 +10,7 @@ train_config = {
     'is_use_gpu': True,
     'n_test_games': 10,
     'n_mcts_iters': 500,
-    'n_self_plays': 500,  
+    'n_self_plays': 2700,  
     'is_save_game': False,
     'n_feature_planes': 6,
     'check_frequency': 100,
