@@ -34,9 +34,7 @@ This Gomoku game offers the following modes:
 2. **Player vs AI** – Challenge an AI opponent powered by Alpha-Beta Pruning, CNNs, or an AlphaZero-inspired network.  
 
 ### 🕹️ Controls  
-- **Left Click**: Place a stone on an empty board position.  
-- **Right Click** (Optional, if implemented): Undo the last move.  
-- **Restart Button**: Resets the game and starts a new round.  
+**Left Click**: Place a stone on an empty board position.  
 
 ### 🏆 Game Rules  
 - Players take turns placing stones on the board.  
