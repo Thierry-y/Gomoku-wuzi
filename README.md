@@ -1,8 +1,8 @@
 # Gomoku-wuzi
 
-This project presents a **Gomoku** (Five-in-a-Row) game featuring two distinct AI strategies:  
-1. **Alpha-Beta Pruning-based AI** for strategic move searching.  
-2. **Convolutional Neural Network (CNN)-based AI** for board evaluation and decision-making.
+**This project presents a Gomoku (Five-in-a-Row) game featuring two distinct AI approaches:**  
+1. **Alpha-Beta Pruning-based AI** that utilizes a recursive Minimax algorithm with Alpha-Beta pruning for efficient move searching.  
+2. **Deep Learning-based AI**, incorporating Convolutional Neural Networks (CNNs) and AlphaZero-style Policy-Value Networks for advanced board evaluation and decision-making. 
 
 Built with **Python**, **PyTorch**, and **Pygame**, the project offers both **Player vs Player** and **Player vs AI** modes.
 
@@ -19,6 +19,65 @@ Built with **Python**, **PyTorch**, and **Pygame**, the project offers both **Pl
 - **Python Version:** 3.10.12  
 
 - **PyTorch:** 2.2.2+rocm5.7  
+
+## How to Play  
+
+### Normal Mode (gomoku.py)
+
+Run the following command in your terminal:  
+```bash
+python3 gomoku.py
+```  
+
+This Gomoku game offers the following modes:  
+1. **Player vs Player** – Two human players take turns placing stones.  
+2. **Player vs AI** – Challenge an AI opponent powered by Alpha-Beta Pruning, CNNs, or an AlphaZero-inspired network.  
+
+### 🕹️ Controls  
+- **Left Click**: Place a stone on an empty board position.  
+- **Right Click** (Optional, if implemented): Undo the last move.  
+- **Restart Button**: Resets the game and starts a new round.  
+
+### 🏆 Game Rules  
+- Players take turns placing stones on the board.  
+- The first player to get **five stones in a row** (horizontally, vertically, or diagonally) wins.  
+- If the board is full without a winner, the game is a draw.
+
+### 🔧 AI Difficulty  
+#### Models
+1. **go_model.pth** – Trained using an Artificial Neural Network (ai.py).  
+2. **go_model_val_net_alphazero.pth** – Trained using Convolutional Neural Networks (val_net_ai.py). 
+
+#### Models performance
+- **CNNs-based model (go_model_val_net_alphazero.pth)** performs better than the ANN model due to its ability to capture spatial patterns on the board.  
+- However, the AI's primary decision-making is still driven by **Minimax with Alpha-Beta pruning**, not just the trained model.  
+
+#### To adjust difficulty:
+- The default AI uses a **hybrid mode** (set in `search.py`), which balances model evaluation with traditional search algorithms. This setting is roughly at an **advanced player level**.  
+- **Easier AI**: Modify `search.py` to use **pure model evaluation mode** instead of hybrid. This results in AI performance closer to a beginner.
+
+### Alphazero Modes (alphagomoku/gomoku_game.py)
+
+Run the following command in your terminal:  
+```bash
+cd alphagomoku
+python3 gomoku_game.py
+```  
+
+### 🕹️Controls & 🏆Rules
+Same as normal mode
+
+### 🔧 AI Difficulty
+The more **self-play iterations** a model undergoes, the stronger it becomes:
+  - **500 games** → Beginner Level  
+  - **1000 games** → Intermediate Level  
+  - **2700 games** → Advanced Level   
+
+You can determine the self-play count from the model filename:  
+- Example: **`final_policy_value_net_2700.pth`** represents a model trained with **2700 self-play games**.  
+
+All **AlphaZero-trained models** are stored in:  
+📂 **`alphagomoku/model/`** 
 
 ## Implementation Steps
 
@@ -176,6 +235,8 @@ The full architecture diagram can be found at: `img/policy_value_net_full.png`
 - **4. Testing & Model Updates**  
    - Every `check_frequency` iterations, the model is tested against the **historical best model** over `n_test_games`.  
    - **If the win rate exceeds 55%, the new model replaces the best model.**  
+
+Using the settings in `start_train.py`, 1000 self-play games take approximately 3 hours.  
 
 ## Reference
 

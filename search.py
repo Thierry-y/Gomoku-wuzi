@@ -54,15 +54,15 @@ class searcher(object):
     
     # Recursive search: returns the best score for the current turn
     def __search(self, turn, depth, alpha=-0x7fffffff, beta=0x7fffffff):
-        # if depth <= 0:
-        #     # Use a mix of ANN-based and traditional evaluation functions
-        #     mix_score = self.ann_evaluator.get_score_ANN(self.board, turn) * 0.5 + self.evaluator.evaluate(self.board, turn) * 0.5
-        #     return mix_score
-        
         if depth <= 0:
-            # Use a ANN-based evaluation functions
-            mix_score = self.ann_evaluator.get_score_ANN(self.board, turn)
+            # Use a mix of ANN-based and traditional evaluation functions
+            mix_score = self.ann_evaluator.get_score_ANN(self.board, turn) * 0.5 + self.evaluator.evaluate(self.board, turn) * 0.5
             return mix_score
+        
+        # if depth <= 0:
+        #     # Use a ANN-based evaluation functions
+        #     mix_score = self.ann_evaluator.get_score_ANN(self.board, turn)
+        #     return mix_score
 
         # if depth <= 0:
         #     score = self.evaluator.evaluate(self.board, turn)
