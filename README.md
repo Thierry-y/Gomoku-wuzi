@@ -1,10 +1,14 @@
 # Gomoku-wuzi
 
-**This project presents a Gomoku (Five-in-a-Row) game featuring two distinct AI approaches:**  
-1. **Alpha-Beta Pruning-based AI** that utilizes a recursive Minimax algorithm with Alpha-Beta pruning for efficient move searching.  
-2. **Deep Learning-based AI**, incorporating Convolutional Neural Networks (CNNs) and AlphaZero-style Policy-Value Networks for advanced board evaluation and decision-making. 
+This game is developed using **Python**, **PyTorch**, and **Pygame**, offering the following game modes:  
 
-Built with **Python**, **PyTorch**, and **Pygame**, the project offers both **Player vs Player** and **Player vs AI** modes.
+- **Player vs Player** – Two players take turns placing stones.  
+- **Player vs AI** – Challenge an AI opponent, choosing from **Alpha-Beta Pruning AI**, **CNN AI**, or **AlphaZero-style AI**.  
+
+The game features two distinct AI approaches:  
+
+1. **Alpha-Beta Pruning AI** – Utilizes **Minimax recursive search** with **Alpha-Beta pruning** for efficient move evaluation.  
+2. **Deep Learning AI** – Incorporates **Convolutional Neural Networks (CNNs)** and an **AlphaZero-style Policy-Value Network** for advanced board evaluation and decision-making.  
 
 <p align="center">
   <img src="img/game.png" alt="game" width="30%">
@@ -28,10 +32,6 @@ Run the following command in your terminal:
 ```bash
 python3 gomoku.py
 ```  
-
-This Gomoku game offers the following modes:  
-1. **Player vs Player** – Two human players take turns placing stones.  
-2. **Player vs AI** – Challenge an AI opponent powered by Alpha-Beta Pruning, CNNs, or an AlphaZero-inspired network.  
 
 ### 🕹️ Controls  
 **Left Click**: Place a stone on an empty board position.  
@@ -233,6 +233,10 @@ The full architecture diagram can be found at: `img/policy_value_net_full.png`
 - **4. Testing & Model Updates**  
    - Every `check_frequency` iterations, the model is tested against the **historical best model** over `n_test_games`.  
    - **If the win rate exceeds 55%, the new model replaces the best model.**  
+
+<p align="center">
+  <img src="img/alpha_zero_2700.png" alt="game" width="80%">
+</p>
 
 Using the settings in `start_train.py`, 1000 self-play games take approximately 3 hours.  
 
